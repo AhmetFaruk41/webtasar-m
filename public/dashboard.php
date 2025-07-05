@@ -17,7 +17,8 @@ $notifications = $notificationModel->getByUserId($user['id'], 5);
 $unreadNotifications = $notificationModel->getUnreadCount($user['id']);
 
 // Son talepler
-$recentRequests = $requestModel->getByUserId($user['id'], [], 5);
+$allUserRequests = $requestModel->getByUserId($user['id'], []);
+$recentRequests = array_slice($allUserRequests, 0, 5);
 
 // Onay bekleyen talepler (sadece manager ve admin için)
 $pendingApprovals = [];
@@ -54,6 +55,14 @@ $flashMessages = getFlashMessages();
                 </div>
                 
                 <div class="flex items-center space-x-4">
+                    <!-- Admin Panel Link (sadece admin için) -->
+                    <?php if ($user['role'] === 'admin'): ?>
+                        <a href="admin.php" class="text-gray-700 hover:text-gray-900">
+                            <i class="fas fa-cogs mr-1"></i>
+                            Admin
+                        </a>
+                    <?php endif; ?>
+                    
                     <!-- Bildirimler -->
                     <div class="relative">
                         <button id="notifications-btn" class="relative p-2 text-gray-500 hover:text-gray-700 focus:outline-none">
@@ -217,7 +226,7 @@ $flashMessages = getFlashMessages();
         <div class="bg-white shadow rounded-lg mb-6">
             <div class="p-6">
                 <h2 class="text-lg font-medium text-gray-900 mb-4">Hızlı Erişim</h2>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
                     <a href="request-form.php" class="flex flex-col items-center p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors">
                         <i class="fas fa-plus text-2xl text-blue-600 mb-2"></i>
                         <span class="text-sm font-medium text-blue-900">Yeni Talep</span>
@@ -240,6 +249,12 @@ $flashMessages = getFlashMessages();
                     <a href="reports.php" class="flex flex-col items-center p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors">
                         <i class="fas fa-chart-bar text-2xl text-purple-600 mb-2"></i>
                         <span class="text-sm font-medium text-purple-900">Raporlar</span>
+                    </a>
+                    
+                    <!-- Ek özellikler grid'e ekle -->
+                    <a href="profile.php" class="flex flex-col items-center p-4 bg-indigo-50 rounded-lg hover:bg-indigo-100 transition-colors">
+                        <i class="fas fa-user text-2xl text-indigo-600 mb-2"></i>
+                        <span class="text-sm font-medium text-indigo-900">Profil</span>
                     </a>
                 </div>
             </div>
